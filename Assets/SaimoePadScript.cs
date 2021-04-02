@@ -200,4 +200,31 @@ public class SaimoePadScript : MonoBehaviour
 			}
 		}
 	}
+    IEnumerator TwitchHandleForcedSolve()
+    {
+        if (PressTracker != 0)
+        {
+            PressTracker = 0;
+            BooleanVariables = new int[] { -1, -1, -1, -1 };
+            ButtonsPressed = new int[] { 5, 5, 5, 5 };
+            for (int i = 0; i < 4; i++)
+            {
+                FourHead[i].material.color = Color.white;
+            }
+        }
+        while (!ModuleSolved)
+        {
+            List<string> Names = new List<string> { FourHead[0].sprite.name, FourHead[1].sprite.name, FourHead[2].sprite.name, FourHead[3].sprite.name };
+            List<string> SortedNames = new List<string> { FourHead[0].sprite.name, FourHead[1].sprite.name, FourHead[2].sprite.name, FourHead[3].sprite.name };
+            SortedNames.Sort();
+            Debug.Log(Names.Join());
+            Debug.Log(SortedNames.Join());
+            for (int i = 0; i < 4; i++)
+            {
+                Buttons[Array.IndexOf(Names.ToArray(), SortedNames[i])].OnInteract();
+                yield return new WaitForSeconds(0.15f);
+            }
+            yield return null;
+        } 
+    }
 }
